@@ -48,3 +48,56 @@ Join our community of developers creating universal apps.
 
 - [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
 - [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+
+## Initial setup
+
+install nativewind
+
+```
+npm install nativewind
+npm install --save-dev tailwindcss@3.3.2
+```
+
+expo-env.d.ts add `@nativewind/types` to your project.
+
+```
+/// <reference types="nativewind/types" />
+```
+
+Run npx tailwindcss init to create a tailwind.config.js file
+
+```
+// tailwind.config.js
+
+module.exports = {
+- content: [],
++ content: ["./App.{js,jsx,ts,tsx}", "./<custom directory>/**/*.{js,jsx,ts,tsx}"],
+  theme: {
+    extend: {},
+  },
+  plugins: [],
+}
+```
+
+Modify your babel.config.js
+
+```
+// babel.config.js
+module.exports = function (api) {
+  api.cache(true);
+  return {
+    presets: ["babel-preset-expo"],
++   plugins: ["nativewind/babel"],
+  };
+};
+
+```
+
+Start writing code!
+
+```
+<View className="flex-1 items-center justify-center bg-white">
+  <Text>Open up App.js to start working on your app!</Text>
+  <StatusBar style="auto" />
+</View>
+```
