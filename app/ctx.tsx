@@ -3,6 +3,7 @@ import { useContext, createContext, type PropsWithChildren } from "react";
 import { useEffect, useCallback, useReducer } from "react";
 import * as SecureStore from "expo-secure-store";
 import { Platform } from "react-native";
+import { loginAction } from "@/actions/login-action";
 
 type UseStateHook<T> = [[boolean, T | null], (value: T | null) => void];
 
@@ -82,8 +83,6 @@ const AuthContext = createContext<{
 export function useSession() {
   const value = useContext(AuthContext);
 
-  console.log({ session: value.session });
-
   if (process.env.NODE_ENV !== "production") {
     if (!value) {
       throw new Error("useSession must be wrapped in a <SessionProvider />");
@@ -99,9 +98,15 @@ export function SessionProvider({ children }: PropsWithChildren) {
   return (
     <AuthContext.Provider
       value={{
-        signIn: () => {
+        signIn: async () => {
           // Perform sign-in logic here
-          setSession("xxx");
+          console.log("signIn");
+          await loginAction({
+            email: "Q6Ezy@example.com",
+            password: "password",
+          }).then((session) => {
+            setSession(session);
+          });
         },
         signOut: () => {
           setSession(null);
